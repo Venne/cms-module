@@ -27,7 +27,7 @@
 {/define}
 
 {define #item}
-	<li n:class="$children ? dropdown" class=";{$item->mainRoute->url};">
+	<li class=";{$item->mainRoute->url};{if $children} dropdown{/if}">
 		<a href="{$control->getLink($item)}"{if $children} class="dropdown-toogle" data-toggle="dropdown"{/if}>{$item->navigationTitle}</a>
 
 		{if $children}
