@@ -12,7 +12,6 @@
 namespace CmsModule\Content\Forms;
 
 use DoctrineModule\Forms\FormFactory;
-use DoctrineModule\Repositories\BaseRepository;
 use Venne\Forms\Form;
 
 /**
@@ -101,7 +100,9 @@ class BasicFormFactory extends FormFactory
 		}
 
 		if ($form->data->page->parent) {
-			$page->addManyToOne('parent', 'Parent')->setPrompt(NULL);
+			$page->addManyToOne('parent', 'Parent')
+				->setPrompt(NULL)
+				->setOrderBy(array('positionString' => 'ASC'));
 		}
 
 		if ($this->getUserPage()) {
