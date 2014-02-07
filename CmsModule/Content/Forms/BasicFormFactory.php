@@ -11,6 +11,8 @@
 
 namespace CmsModule\Content\Forms;
 
+use CmsModule\Content\Entities\PageEntity;
+use DoctrineModule\Forms\Controls\ManyToOne;
 use DoctrineModule\Forms\FormFactory;
 use Venne\Forms\Form;
 
@@ -100,9 +102,11 @@ class BasicFormFactory extends FormFactory
 		}
 
 		if ($form->data->page->parent) {
-			$page->addManyToOne('parent', 'Parent')
-				->setPrompt(NULL)
-				->setOrderBy(array('positionString' => 'ASC'));
+			/** @var ManyToOne $parent */
+			$parent = $page->addManyToOne('parent', 'Parent');
+			$parent
+				->setQuery($this->getPagesQueryBuilder($form->data->page))
+				->setPrompt(NULL);
 		}
 
 		if ($this->getUserPage()) {
@@ -268,5 +272,22 @@ class BasicFormFactory extends FormFactory
 			$this->userPageEntity = $this->mapper->getEntityManager()->getRepository('CmsModule\Pages\Users\PageEntity')->findOneBy(array());
 		}
 		return $this->userPageEntity;
+	}
+
+
+	/**
+	 * @param PageEntity $page
+	 * @return \Doctrine\ORM\QueryBuilder
+	 */
+	private function getPagesQueryBuilder(PageEntity $page = NULL)
+	{
+		$qb = $this->mapper->getEntityManager()->getRepository('CmsModule\Content\Entities\PageEntity')->createQueryBuilder('a')
+			->orderBy('a.positionString', 'ASC');
+
+		if ($page) {
+			$qb->andWhere('a.positionString NOT LIKE :pos')->setParameter('pos', $page->positionString . '%');
+		}
+
+		return $qb;
 	}
 }
