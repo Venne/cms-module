@@ -202,35 +202,35 @@ class BasicFormFactory extends FormFactory
 				detectCheckbox();
 				detectAuto();
 
-				$(".localUrl").bind("keydown keyup blur", function(){
+				$(".localUrl").on("keydown keyup blur", function(){
 					$("#form-checkbox").attr("checked", false);
 					detectCheckbox();
 					detectAuto();
 				});
 
-				$(".formTitle").bind("keydown keyup blur", function(){
+				$(".formTitle").on("keydown keyup blur", function(){
 					$("#form-checkbox-title").attr("checked", false);
 					detectCheckbox();
 					detectAuto();
 				});
 
-				$(".formNavigation").bind("keydown keyup blur", function(){
+				$(".formNavigation").on("keydown keyup blur", function(){
 					$("#form-checkbox-navigationTitle").attr("checked", false);
 					detectCheckbox();
 					detectAuto();
 				});
 
-				$("#form-checkbox").live("click", function(event){
+				$("#form-checkbox").on("click", function(event){
 				    detectAuto();
 				    $("#' . $form['page']['mainRoute']['name']->getHtmlId() . '").trigger("keyup");
 				});
 
-				$("#form-checkbox-title").live("click", function(){
+				$("#form-checkbox-title").on("click", function(){
 				    detectAuto();
 				    $("#' . $form['page']['mainRoute']['name']->getHtmlId() . '").trigger("keyup");
 				});
 
-				$("#form-checkbox-navigationTitle").live("click", function(){
+				$("#form-checkbox-navigationTitle").on("click", function(){
 				    detectAuto();
 				    $("#' . $form['page']['mainRoute']['name']->getHtmlId() . '").trigger("keyup");
 				});
