@@ -126,16 +126,38 @@ class NavigationControl extends Control
 	}
 
 
+	/**
+	 * @param \CmsModule\Content\Entities\PageEntity $entity
+	 * @return string
+	 */
 	public function getLink(\CmsModule\Content\Entities\PageEntity $entity)
 	{
-		if ($entity instanceof PageEntity) {
-			if ($entity->page) {
-				return $this->presenter->link('Route', array('route' => $entity->page->mainRoute));
+		if ($entity->extendedPage instanceof PageEntity) {
+			if ($entity->extendedPage->redirect) {
+				return $this->presenter->link('Route', array('route' => $entity->extendedPage->redirect->mainRoute));
 			} else {
-				return $this->template->basePath . '/' . $entity->redirectUrl;
+				return $this->template->basePath . '/' . $entity->extendedPage->redirectUrl;
 			}
 		} else {
 			return $this->presenter->link('Route', array('route' => $entity->mainRoute));
+		}
+	}
+
+
+	/**
+	 * @param \CmsModule\Content\Entities\PageEntity $entity
+	 * @return string
+	 */
+	public function getUrl(\CmsModule\Content\Entities\PageEntity $entity)
+	{
+		if ($entity->extendedPage instanceof PageEntity) {
+			if ($entity->extendedPage->redirect) {
+				return $entity->extendedPage->redirect->mainRoute;
+			} else {
+				return $entity->extendedPage->redirectUrl;
+			}
+		} else {
+			return $entity->mainRoute->url;
 		}
 	}
 
