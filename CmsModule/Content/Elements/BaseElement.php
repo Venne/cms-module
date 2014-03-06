@@ -12,7 +12,6 @@
 namespace CmsModule\Content\Elements;
 
 use CmsModule\Content\Control;
-use CmsModule\Content\ElementManager;
 use CmsModule\Content\Elements\Forms\BasicFormFactory;
 use CmsModule\Content\Elements\Forms\ClearFormFactory;
 use CmsModule\Content\Entities\LanguageEntity;
@@ -226,23 +225,17 @@ abstract class BaseElement extends Control implements IElement
 			);
 
 			foreach ($data as $i) {
-				$this->element = $this->getElementRepository()->findOneBy(array(
-						'name' => $this->name,
-						'mode' => ElementEntity::MODE_WEBSITE,
-					) + $i);
+				if ($this->pageEntity && $this->routeEntity) {
+					$this->element = $this->getElementRepository()->findOneBy(array(
+							'name' => $this->name,
+							'page' => $this->pageEntity->id,
+							'route' => $this->routeEntity->id,
+							'mode' => ElementEntity::MODE_ROUTE,
+						) + $i);
 
-				if ($this->element) {
-					break;
-				}
-
-				$this->element = $this->getElementRepository()->findOneBy(array(
-						'name' => $this->name,
-						'layout' => $this->layoutEntity->id,
-						'mode' => ElementEntity::MODE_LAYOUT,
-					) + $i);
-
-				if ($this->element) {
-					break;
+					if ($this->element) {
+						break;
+					}
 				}
 
 				if ($this->pageEntity) {
@@ -257,17 +250,23 @@ abstract class BaseElement extends Control implements IElement
 					}
 				}
 
-				if ($this->pageEntity && $this->routeEntity) {
-					$this->element = $this->getElementRepository()->findOneBy(array(
-							'name' => $this->name,
-							'page' => $this->pageEntity->id,
-							'route' => $this->routeEntity->id,
-							'mode' => ElementEntity::MODE_ROUTE,
-						) + $i);
+				$this->element = $this->getElementRepository()->findOneBy(array(
+						'name' => $this->name,
+						'layout' => $this->layoutEntity->id,
+						'mode' => ElementEntity::MODE_LAYOUT,
+					) + $i);
 
-					if ($this->element) {
-						break;
-					}
+				if ($this->element) {
+					break;
+				}
+
+				$this->element = $this->getElementRepository()->findOneBy(array(
+						'name' => $this->name,
+						'mode' => ElementEntity::MODE_WEBSITE,
+					) + $i);
+
+				if ($this->element) {
+					break;
 				}
 			}
 
