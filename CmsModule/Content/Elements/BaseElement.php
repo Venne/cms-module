@@ -12,6 +12,7 @@
 namespace CmsModule\Content\Elements;
 
 use CmsModule\Content\Control;
+use CmsModule\Content\ElementManager;
 use CmsModule\Content\Elements\Forms\BasicFormFactory;
 use CmsModule\Content\Elements\Forms\ClearFormFactory;
 use CmsModule\Content\Entities\LanguageEntity;

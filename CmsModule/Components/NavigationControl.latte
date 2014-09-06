@@ -1,5 +1,5 @@
 {capture $navigation}
-{cache [$presenter->lang, $presenter->_domain], tags => ['routes']}
+{cache [$presenter->lang, $presenter->_domain, $root ? $root->id : NULL], tags => ['routes']}
 {var $root = isset($root) ? $root : $control->getRoot()}
 
 {define #menu}
@@ -36,14 +36,14 @@
 	</li>
 {/define}
 
-{include #menu items => $control->getChildren($root), sub => 0, first => TRUE, root => $control->getRoot()}
+{include #menu items => $control->getChildren($root), sub => 0, first => TRUE, root => $root}
 {/cache}
 {/capture}
 
 <?php
 	$d = preg_match_all('/;;;([^;]*);;;([^;]*);;;/', $navigation, $matches, PREG_SET_ORDER);
 	foreach ($matches as $m) {
-		if ($control->isUrlActive($m[1]) && $control->isDomainActive($m[2])) {
+		if ($control->isDomainActive($m[2]) && $control->isUrlActive($m[1])) {
 			$navigation = str_replace(';;;' . $m[1] . ';;;' . $m[2] . ';;;', 'active', $navigation);
 		} else {
 			$navigation = str_replace($m[0], '', $navigation);
