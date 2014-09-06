@@ -48,8 +48,9 @@ class ErrorPresenter extends FrontPresenter
 		Debugger::log("HTTP code $code: {$exception->getMessage()} in {$exception->getFile()}:{$exception->getLine()}", 'access');
 
 		if (in_array($code, array(403, 404, 500))) {
-			$page = $this->pageRepository->findOneBy(array('special' => $code));
+			Debugger::log($exception, Debugger::ERROR);
 
+			$page = $this->pageRepository->findOneBy(array('special' => $code));
 			if ($page) {
 				$this->forward(':Cms:Pages:Text:Route:', array('routeId' => $page->mainRoute->id, 'pageId' => $page->id));
 			}

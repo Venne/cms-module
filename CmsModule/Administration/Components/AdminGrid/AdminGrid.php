@@ -17,6 +17,7 @@ use CmsModule\Components\Navbar\NavbarControl;
 use CmsModule\Components\Navbar\Section;
 use DoctrineModule\Repositories\BaseRepository;
 use Grido\DataSources\Doctrine;
+use Nette\Application\BadRequestException;
 use Nette\Callback;
 use Venne\Application\UI\Control;
 use Venne\Forms\Form as VForm;
@@ -106,6 +107,12 @@ class AdminGrid extends Control
 		parent::attached($presenter);
 
 		$this->onAttached($this);
+
+		if ($this->id) {
+			if (!$this->repository->find($this->id)) {
+				throw new BadRequestException;
+			}
+		}
 	}
 
 

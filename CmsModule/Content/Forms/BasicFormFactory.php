@@ -284,7 +284,7 @@ class BasicFormFactory extends FormFactory
 		$qb = $this->mapper->getEntityManager()->getRepository('CmsModule\Content\Entities\PageEntity')->createQueryBuilder('a')
 			->orderBy('a.positionString', 'ASC');
 
-		if ($page) {
+		if ($page && $page->positionString) {
 			$qb->andWhere('a.positionString NOT LIKE :pos')->setParameter('pos', $page->positionString . '%');
 		}
 

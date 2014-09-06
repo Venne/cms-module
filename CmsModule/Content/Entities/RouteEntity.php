@@ -1064,7 +1064,7 @@ class RouteEntity extends \DoctrineModule\Entities\IdentifiedEntity
 	{
 		$language = $language ? : $this->locale;
 
-		if ($language && $this->translations[$language->id]) {
+		if ($language && isset($this->translations[$language->id])) {
 			if (($ret = $this->translations[$language->id]->{$field}) !== NULL) {
 				return $ret;
 			}
